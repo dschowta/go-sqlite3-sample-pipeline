@@ -28,7 +28,7 @@ jobs:
         uses: crazy-max/ghaction-xgo@v1
         with:
           xgo_version: latest
-          go_version: 1.14
+          go_version: 1.14.2
           dest: build
           prefix: go-sqlite3-sample-
           targets: windows/amd64,linux/386,linux/amd64,darwin/386,darwin/amd64
