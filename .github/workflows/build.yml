@@ -37,7 +37,7 @@ jobs:
         with:
           files: |
             dist/*
-          tag_name: ${{github.run_number}}
+          tag_name: ${{github.ref}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
