@@ -63,11 +63,11 @@ jobs:
             --tag "${{ steps.prepare.outputs.docker_image }}:latest" \
             --file Dockerfile .
       - 
-        name: Login to DockerHub Registry
-        uses: Azure/docker-login@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        name: Docker Login
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "${DOCKER_PASSWORD}" | docker login --username "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       -
         name: Docker Buildx (push)
