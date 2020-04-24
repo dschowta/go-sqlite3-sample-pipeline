@@ -1,3 +1,4 @@
+//Credits: This code  is originally taken from https://github.com/mattn/go-sqlite3/blob/ed211752885a3e9a33d39e12e8d0fa46c12d85fa/_example/simple/simple.go
 package main
 
 import (
