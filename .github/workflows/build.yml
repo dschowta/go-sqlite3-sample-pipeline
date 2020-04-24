@@ -29,7 +29,6 @@ jobs:
           v: true
           x: true
           ldflags:  -w -extldflags "-static"
-
       - 
         name: Upload releases
         uses: svenstaro/upload-release-action@v1-release
@@ -46,6 +45,12 @@ jobs:
         name: Checkout
         uses: actions/checkout@v1
       -
+        name: Prepare
+        id: prepare
+        run: |
+          echo ::set-output name=docker_platforms::linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le,linux/s390x
+          echo ::set-output name=docker_image::dschowta/${{ github.event.repository.name }}
+      -
         name: Set up Docker Buildx
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
@@ -53,9 +58,9 @@ jobs:
       - 
         name: Docker Buildx (no push)
         run: |
-          docker buildx build --platform linux/amd64,linux/arm/v7,linux/arm64 \
+          docker buildx build --platform ${{ steps.prepare.outputs.docker_platforms }} \
             --output "type=image,push=false" \
-            --tag "dschowta/go-sqlite3-sample-pipeline:latest" \
+            --tag "${{ steps.prepare.outputs.docker_image }}:latest" \
             --file Dockerfile .
       - 
         name: Login to DockerHub Registry
@@ -64,7 +69,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - 
-        name: docker push latest
-        run: docker push dschowta/go-sqlite3-sample-pipeline:latest
-        if: github.ref == 'refs/heads/master'
+      -
+        name: Docker Buildx (push)
+        run: |
+          docker buildx build --platform ${{ steps.prepare.outputs.docker_platforms }} \
+            --output "type=image,push=true" \
+            --tag "${{ steps.prepare.outputs.docker_image }}:latest" \
+            --file Dockerfile .
