@@ -28,7 +28,8 @@ jobs:
           targets: windows/amd64,linux/amd64, linux/arm-7,linx/arm64, darwin/amd64
           v: true
           x: true
-          ldflags: -s -w
+          ldflags:  -w -extldflags "-static"
+
       - 
         name: Upload releases
         uses: svenstaro/upload-release-action@v1-release
@@ -44,6 +45,11 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v1
+      -
+        name: Set up Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
       - 
         name: Docker Buildx (no push)
         run: |
