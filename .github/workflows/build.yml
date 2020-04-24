@@ -31,7 +31,7 @@ jobs:
           go_version: 1.14.2
           dest: build
           prefix: go-sqlite3-sample-
-          targets: windows/amd64,linux/386,linux/amd64,darwin/386,darwin/amd64
+          targets: windows/amd64,linux/amd64, linux/arm-7,linx/arm64, darwin/amd64
           v: true
           x: true
           ldflags: -s -w
